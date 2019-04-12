@@ -25,16 +25,23 @@ public class My_Calendar {
 
 	public static void main(String[] args) {
 
-		System.out.println("전체 날수를 구하고 싶은 년도와 월을 입력하세요");
+		System.out.println("반복 회수를 입력하세요");
 		Scanner scanner = new Scanner(System.in);
 		My_Calendar calendar = new My_Calendar();
 
-		int month = scanner.nextInt();
-		scanner.close();
+		int Trynum = scanner.nextInt();
+//		int days ;
+		int month ;
 
-		int days = GetMaxDaysOfMonth(month) ;
+		for(int i=1;i<=Trynum;i++) {
+			System.out.println("날수를 구하고자 하는 달을 입력하세요") ;
+			month = scanner.nextInt();
+			System.out.printf("입력된 %d월의 날수는 %d 입니다. \n", month, calendar.GetMaxDaysOfMonth(month));
+		}
 
-		System.out.printf("입력된 %d월의 날수는 %d 입니다. \n", month, calendar.GetMaxDaysOfMonth(month));
+		System.out.println("Bye ~~") ;
+		scanner.close() ;
+//		days = GetMaxDaysOfMonth(month) ;
 
 		calendar.printcalendar();
 
