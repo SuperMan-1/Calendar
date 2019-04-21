@@ -1,43 +1,73 @@
 
-import java.util.Calendar;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.GregorianCalendar;
+import java.util.HashMap;
 import java.util.Scanner;
 
 public class My_Calendar {
 
 	private static final int[] Max_Days = { 31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31 };
 	private static final int[] Max_Leap_Days = { 31, 29, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31 };
+	
+	private HashMap <Date,String> planMap;
+	
+	public My_Calendar () {
+		planMap = new HashMap<Date, String>();
+	}
 
 	/*
 	 * return 0 ~ 6 (0:sunday, 1:monday, 2:tuesday, 3:wednesday, 4: thursday, 5:friday, 6:saturday)
 	 */
 	
-	public static int weekday (String weekday) {
+	public void regiesterPlan(String strDate, String Plan) throws ParseException {
+
+		Date date = new SimpleDateFormat("yyyy-MM-dd").parse(strDate);
+		planMap.put(date, Plan);
+	}
+
+	public String searchPlan(String strDate) throws ParseException {
+		Date date = new SimpleDateFormat("yyyy-MM-dd").parse(strDate);
+		String Plan = planMap.get(date);
+		return Plan;
+	}
+	
+	public int weekday (String weekday) {
 
 		int weeknum=0;
-
-		if (weekday.contains("SU")) {
-			weeknum = 0;
-		}else if (weekday.contains("MO")) {
-			weeknum = 1;
-		}else if (weekday.contains("TU")) {
-			weeknum = 2;
-		}else if (weekday.contains("WE")) {
-			weeknum = 3;
-		}else if (weekday.contains("TH")) {
-			weeknum = 4;
-		}else if (weekday.contains("FR")) {
-			weeknum = 5;
-		}else if (weekday.contains("SA")) {
-			weeknum = 6;
-		}else {
-			weeknum = 0;
+		
+		switch(weekday) {
+			case "SU":
+				weeknum = 0;
+				break;
+			case "MO":
+				weeknum = 1;
+				break;
+			case "TU":
+				weeknum = 2;
+				break;
+			case "WE":
+				weeknum = 3;
+				break;
+			case "TH":	
+				weeknum = 4;
+				break;
+			case "FR":
+				weeknum = 5;
+				break;
+			case "SA":	
+				weeknum = 6;
+				break;
+			default:
+				weeknum = 0;
+				break;
 		}
-
+		
 		return weeknum;
 	}
 
-	public static boolean leapyear_check(int year) {
+	public boolean leapyear_check(int year) {
 
 		if((year % 4 == 0 && year % 100 != 0) || year % 400 == 0) {
 			return true;
@@ -47,7 +77,7 @@ public class My_Calendar {
 
 	}
 
-	public static int GetMaxDaysOfMonth(int year,int month) {
+	public int GetMaxDaysOfMonth(int year,int month) {
 
 		if(leapyear_check(year)) {
 			return (Max_Leap_Days[month - 1]);
@@ -57,7 +87,7 @@ public class My_Calendar {
 
 	}
 
-	public static void printcalendar(int year, int month) {
+	public void printcalendar(int year, int month) {
 
 		System.out.printf("<<%4d년 %2d월>> \n",year,month);
 		System.out.println(" SU MO TU WE TH FR SA");
@@ -96,7 +126,7 @@ public class My_Calendar {
 		System.out.println();
 	}
 
-	private static int getweekday(int year, int month, int days) {
+	private int getweekday(int year, int month, int days) {
 
 		int standard_year = 1970 ;
 		int TotalCnt = 0;
