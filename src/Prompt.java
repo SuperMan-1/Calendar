@@ -83,20 +83,21 @@ public class Prompt {
 
 	private void cmdSearch(Scanner scanner, My_Calendar calendar){
 
-		String str_Date, str_Schedule="";
+		String str_Date;
+		String str_Schedule;
 
 		System.out.println("[일정검색] 날자을 입력하세요.");
 		System.out.print(COMMON_PROMPT);
 		str_Date = scanner.next();
 		
-		try {
-			str_Schedule = calendar.searchPlan(str_Date);
-		} catch (ParseException e) {
-			e.printStackTrace();
-			System.out.println("일정 검색 중 에러가 발생하였습니다.");
+		str_Schedule = calendar.searchPlan(str_Date);
+
+		if(str_Schedule != null) {
+			System.out.println(str_Schedule);
+		}else {
+			System.out.println("일정이 없습니다");
 		}
-		
-		System.out.println(str_Schedule);
+
 	}
 
 	private void cmdRegister(Scanner scanner, My_Calendar calendar) throws ParseException {
@@ -110,9 +111,9 @@ public class Prompt {
 		System.out.println("일정을 입력하세요");
 		System.out.print(COMMON_PROMPT);
 		str_schedule = scanner.nextLine();
-		
+
 		calendar.regiesterPlan(str_date,str_schedule);
-	
+
 	}
 
 	public static void main(String[] args) throws ParseException {

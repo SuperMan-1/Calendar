@@ -1,10 +1,13 @@
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.HashMap;
 import java.util.Scanner;
+import java.io.File;
+import java.io.BufferedWriter;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.FileNotFoundException;
 
 public class My_Calendar {
 
@@ -21,16 +24,54 @@ public class My_Calendar {
 	 * return 0 ~ 6 (0:sunday, 1:monday, 2:tuesday, 3:wednesday, 4: thursday, 5:friday, 6:saturday)
 	 */
 	
-	public void regiesterPlan(String strDate, String Plan) throws ParseException {
+	public void filewrite(String strDate, String Plan) {
 
-		Date date = new SimpleDateFormat("yyyy-MM-dd").parse(strDate);
-		planMap.put(date, Plan);
+		try {
+			File file = new File("C:\\Javastuding\\workspace\\FileIO\\"+strDate+".txt");
+			FileWriter filewriter = new FileWriter(file, true);
+//			BufferedWriter bufferedwrite = new BufferedWriter(new FileWriter(file));
+			BufferedWriter bufferedwrite = new BufferedWriter(filewriter);
+
+			if(file.isFile() && file.canWrite()) {
+				bufferedwrite.write(Plan);
+				bufferedwrite.newLine();
+				bufferedwrite.close();
+			}
+		}catch (IOException e) {
+			System.out.println(e);
+		}
+	}
+	
+	public void regiesterPlan(String strDate, String Plan) {
+		
+		PlanItem planitem = new PlanItem(strDate,Plan);
+		planMap.put(planitem.getDate(), planitem.getplan());
+		
+		filewrite(strDate,Plan);
 	}
 
-	public String searchPlan(String strDate) throws ParseException {
-		Date date = new SimpleDateFormat("yyyy-MM-dd").parse(strDate);
-		String Plan = planMap.get(date);
-		return Plan;
+	public String searchPlan(String strDate) {
+//		Date date = PlanItem.getDatefromString(strDate);
+		String return_str = "";
+
+		try {
+			File file= new File("C:\\Javastuding\\workspace\\FileIO\\"+strDate+".txt");
+			Scanner scan = new Scanner(file);
+			
+			while(scan.hasNextLine()) {
+				return_str = return_str + scan.nextLine();
+				if(return_str != null) {
+					return_str = return_str + "\r\n";
+				}
+			}
+
+			scan.close();
+
+		}catch(FileNotFoundException e) {
+			System.out.println("File Not Found!");
+		}
+
+		return return_str;
 	}
 	
 	public int weekday (String weekday) {
